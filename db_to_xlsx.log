@@ -1,0 +1,27 @@
+2021-10-06 11:40:30,355 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-06 11:40:30,380 :: INFO :: create_db_connection:: Opened SQLite Database.
+2021-10-06 11:40:41,398 :: INFO :: get_data:: Fetched Database data.
+2021-10-06 11:40:41,406 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+2021-10-06 11:41:27,024 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-06 11:41:27,833 :: INFO :: create_db_connection:: Connected to mysql server on 192.168.100.2
+2021-10-06 11:41:58,382 :: ERROR :: get_data:: Invalid SELECT statement requested.
+2021-10-06 11:42:03,368 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-06 11:42:03,453 :: INFO :: create_db_connection:: Connected to mysql server on 192.168.100.2
+2021-10-06 11:42:41,601 :: INFO :: get_data:: Fetched Database data.
+2021-10-06 11:42:41,633 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+2021-10-06 11:43:38,375 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-06 11:43:38,752 :: INFO :: create_db_connection:: Connected to postgresql server on 192.168.100.2
+2021-10-06 11:43:45,707 :: INFO :: get_data:: Fetched Database data.
+2021-10-06 11:43:45,888 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+2021-10-06 11:43:56,632 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-06 11:43:56,910 :: INFO :: create_db_connection:: Connected to postgresql server on 192.168.100.2
+2021-10-06 11:44:02,210 :: INFO :: get_data:: Fetched Database data.
+2021-10-06 11:44:02,528 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+2021-10-06 11:50:22,108 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-06 11:50:22,488 :: INFO :: create_db_connection:: Connected to postgresql server on 192.168.100.2
+2021-10-06 11:50:29,718 :: INFO :: get_data:: Fetched Database data.
+2021-10-06 11:50:29,886 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+2021-10-06 11:50:59,374 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-06 11:50:59,611 :: INFO :: create_db_connection:: Connected to postgresql server on 192.168.100.2
+2021-10-06 11:51:05,979 :: INFO :: get_data:: Fetched Database data.
+2021-10-06 11:51:06,156 :: INFO :: write_excel_file:: Excel files have been written succesfully.
