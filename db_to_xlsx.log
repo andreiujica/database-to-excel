@@ -25,3 +25,12 @@
 2021-10-06 11:50:59,611 :: INFO :: create_db_connection:: Connected to postgresql server on 192.168.100.2
 2021-10-06 11:51:05,979 :: INFO :: get_data:: Fetched Database data.
 2021-10-06 11:51:06,156 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+2021-10-07 23:13:45,094 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-07 23:13:45,219 :: INFO :: create_db_connection:: Connected to mysql server on 192.168.100.2
+2021-10-07 23:13:54,799 :: INFO :: get_data:: Fetched Database data.
+2021-10-07 23:13:54,802 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+2021-10-07 23:14:52,628 :: INFO :: get_input_parameters:: Input arguments are ok.
+2021-10-07 23:14:52,738 :: INFO :: create_db_connection:: Connected to mysql server on 192.168.100.2
+2021-10-07 23:14:57,987 :: INFO :: get_data:: Fetched Database data.
+2021-10-07 23:14:57,992 :: INFO :: write_excel_file:: Excel files have been written succesfully.
+
