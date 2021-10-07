@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, MetaData, text
-from sqlalchemy.engine.base import Engine
+import pandas as pd
 import xlsxwriter
 import argparse
 import logging
@@ -29,12 +29,12 @@ def get_input_parameters() -> argparse.Namespace:
     logging.info("Input arguments are ok.")
     return args
 
-def create_db_connection(dialect, database, username , password , host , port) -> Engine:
+def create_db_connection(dialect, database, username , password , host , port):
     """ Use input data to create SQLalchemy engine - critical for connecting to the database, 
         depending on db flavour and log messages"""
 
     # Dictionary with database drivers used in SQLalchemy URL generation
-    drivers = {"mysql" : "+pymysql", "postgresql" : "+psycopg2", "oracle" : "", "mssql" : "+pymssql"}
+    drivers = {"mysql" : "+pymysql", "postgresql" : "+psycopg2", "oracle" : "+cx_oracle", "mssql" : "+pymssql"}
 
     if dialect == "sqlite" :
         # Only if sqlite database exists in directory try to open it, otherwise
@@ -62,23 +62,10 @@ def create_db_connection(dialect, database, username , password , host , port) -
     
     return engine
 
-def get_column_names(engine, table):
-    """Self-explanatory function, gets column names from engine metadata"""
+def get_column_names(result):
+    """Self explanatory function, get column names from cursor result keys description"""
 
-    meta = MetaData()
-    meta.reflect(bind=engine)
-    return list(meta.tables[table].columns.keys())
-
-def get_table_name(sel: str) -> str:
-    """Helper function to get table name from SQL SELECT statement"""
-
-    # Split selection by delimiter "FROM" and get the first element of that list
-    try:
-        table = sel.split("from")[1].split()[0]
-    except:
-        table = sel.split("FROM")[1].split()[0]
-
-    return table
+    return list(result.keys())
 
 def get_data(engine):
     """Gets SELECT statement from user, asserts if valid then executes SQL statement and fetches data"""
@@ -86,10 +73,9 @@ def get_data(engine):
     while True:
         try: 
             sel = input("Enter Query for any table here (only SELECT permited): ")
-            table = get_table_name(sel)
             
             # Check if this is indeed a SELECT statement
-            assert sel.upper().startswith("SELECT")
+            assert sel.upper().find("SELECT")>-1 and sel.upper().find("FROM")>-1
             break
 
         except AssertionError:
@@ -103,50 +89,37 @@ def get_data(engine):
     conn = engine.connect()
 
     try:
-        query = conn.execute(text(sel))
+        result = conn.execute(text(sel))
         logging.info("Fetched Database data.")
-        return query, table
+        return result
     except:
         print("Not a valid SQL Query")
         logging.error("Invalid SELECT statement requested.")
         exit()
     
-
-def write_excel_sheet(workbook, worksheet, data, headings):
-    """ Helper function for writing Excel file """
-
-    # Name of the worksheet will be the name of the table
-    worksheet = workbook.add_worksheet(worksheet)
-
-    # Write headings on the first line
-    col = 0
-    for _ in range(len(headings)):
-        worksheet.write(0, col , headings[col])
-        col += 1
-
-    # Write the data, row by row
-    row, col = 1,0
-    for entry in data:
-        worksheet.write_row(row, col, entry)
-        row += 1
-
-def write_excel_file(engine: Engine, flavour: str, database: str) -> None:
+def write_excel_file(engine, flavour: str, database: str) -> None:
     """ Main Xlsx writing function, gets the data, creates workbook and worksheet, populates worksheet, logs everything """
 
     # Fetch data that will populate excel sheets
-    data, table = get_data(engine)
+    data = get_data(engine)
+
+    # Create Pandas DataFrame using from_records method
+    df = pd.DataFrame.from_records(data, columns=get_column_names(data))
+    
 
     # As the database name for sqlite contains ".db" we need to erase that extension
     if flavour == "sqlite":
-        workbook = xlsxwriter.Workbook(f"./excel_files/{database[:len(database) - 3]}.xlsx")
+        writer = pd.ExcelWriter(f"./excel_files/{database[:len(database) - 3]}.xlsx", engine = "xlsxwriter")
     else:
-        workbook = xlsxwriter.Workbook(f"./excel_files/{database}.xlsx")
+        writer = pd.ExcelWriter(f"./excel_files/{database}.xlsx", engine = "xlsxwriter")
     
-    write_excel_sheet(workbook, table, data, get_column_names(engine, table))
+    df.to_excel(writer, sheet_name = "Query Result", index = False)
 
     print("Success! Excel files have been written.")
     logging.info("Excel files have been written succesfully.")
-    workbook.close()
+    
+    writer.save()
+
 
 def main(): 
     initialize_logs()
